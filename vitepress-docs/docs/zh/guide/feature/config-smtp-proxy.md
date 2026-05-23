@@ -58,21 +58,26 @@ services:
 | `proxy_url` | `http://localhost:8787` | Worker 后端 URL |
 | `port` | `8025` | SMTP 端口 |
 | `imap_port` | `11143` | IMAP 端口 |
-| `smtp_tls_cert` | 空 | SMTP TLS 证书文件路径（PEM），配置后启用 STARTTLS |
+| `smtp_tls_cert` | 空 | SMTP TLS 证书文件路径（PEM），配置后启用 TLS |
 | `smtp_tls_key` | 空 | SMTP TLS 私钥文件路径（PEM） |
+| `smtp_tls_mode` | `tls` | SMTP TLS 模式：`tls`（直接 TLS/SSL，隐式 TLS）或 `starttls`（升级式 STARTTLS） |
 | `imap_tls_cert` | 空 | IMAP TLS 证书文件路径（PEM），配置后启用 STARTTLS |
 | `imap_tls_key` | 空 | IMAP TLS 私钥文件路径（PEM） |
 | `imap_cache_size` | `500` | 每个邮箱的消息缓存上限 |
 | `imap_http_timeout` | `30.0` | 后端 HTTP 请求超时时间（秒） |
 
-## 启用 STARTTLS
+## 启用 TLS/SSL
 
-分别配置 SMTP 和 IMAP 的 TLS 证书环境变量后，对应服务会自动支持 STARTTLS。SMTP 和 IMAP 可以使用同一套证书。
+默认使用直接 TLS/SSL（隐式 TLS，`smtp_tls_mode=tls`），连接建立后即为加密通道，适用于 SMTPS（端口 465）。
+如需使用 STARTTLS 模式（端口 587），设置 `smtp_tls_mode=starttls`。
+
+分别配置 SMTP 和 IMAP 的 TLS 证书环境变量后，对应服务会自动支持 TLS。SMTP 和 IMAP 可以使用同一套证书。
 
 ```bash
 # .env 示例
 smtp_tls_cert=/path/to/cert.pem
 smtp_tls_key=/path/to/key.pem
+smtp_tls_mode=tls
 imap_tls_cert=/path/to/cert.pem
 imap_tls_key=/path/to/key.pem
 ```
@@ -83,6 +88,7 @@ Docker Compose 中配置：
 environment:
   - smtp_tls_cert=/certs/cert.pem
   - smtp_tls_key=/certs/key.pem
+  - smtp_tls_mode=tls
   - imap_tls_cert=/certs/cert.pem
   - imap_tls_key=/certs/key.pem
 volumes:
