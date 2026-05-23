@@ -17,12 +17,20 @@ class Settings(BaseSettings):
     basic_password: str = ""
     smtp_tls_cert: str = ""
     smtp_tls_key: str = ""
+    smtp_tls_mode: str = "tls"
     imap_tls_cert: str = ""
     imap_tls_key: str = ""
     imap_cache_size: int = 500
     imap_http_timeout: float = 30.0
 
     model_config = SettingsConfigDict(env_file=".env")
+
+    @field_validator("smtp_tls_mode")
+    @classmethod
+    def tls_mode_valid(cls, v):
+        if v not in ("tls", "starttls"):
+            raise ValueError("smtp_tls_mode must be 'tls' or 'starttls'")
+        return v
 
     @field_validator("imap_cache_size")
     @classmethod

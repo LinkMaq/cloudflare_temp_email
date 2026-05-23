@@ -58,21 +58,26 @@ services:
 | `proxy_url` | `http://localhost:8787` | Worker backend URL |
 | `port` | `8025` | SMTP port |
 | `imap_port` | `11143` | IMAP port |
-| `smtp_tls_cert` | empty | SMTP TLS certificate file path (PEM), enables STARTTLS when configured |
+| `smtp_tls_cert` | empty | SMTP TLS certificate file path (PEM), enables TLS when configured |
 | `smtp_tls_key` | empty | SMTP TLS private key file path (PEM) |
+| `smtp_tls_mode` | `tls` | SMTP TLS mode: `tls` (implicit TLS/SSL, direct encryption) or `starttls` (upgrade-based STARTTLS) |
 | `imap_tls_cert` | empty | IMAP TLS certificate file path (PEM), enables STARTTLS when configured |
 | `imap_tls_key` | empty | IMAP TLS private key file path (PEM) |
 | `imap_cache_size` | `500` | Max cached messages per mailbox |
 | `imap_http_timeout` | `30.0` | Backend HTTP request timeout (seconds) |
 
-## Enabling STARTTLS
+## Enabling TLS/SSL
 
-Configure the TLS certificate environment variables for SMTP and/or IMAP to enable STARTTLS support. SMTP and IMAP can share the same certificate.
+By default, direct TLS/SSL (implicit TLS, `smtp_tls_mode=tls`) is used — the connection is encrypted from the start, suitable for SMTPS (port 465).
+To use STARTTLS mode (port 587), set `smtp_tls_mode=starttls`.
+
+Configure the TLS certificate environment variables for SMTP and/or IMAP to enable TLS support. SMTP and IMAP can share the same certificate.
 
 ```bash
 # .env example
 smtp_tls_cert=/path/to/cert.pem
 smtp_tls_key=/path/to/key.pem
+smtp_tls_mode=tls
 imap_tls_cert=/path/to/cert.pem
 imap_tls_key=/path/to/key.pem
 ```
@@ -83,6 +88,7 @@ In Docker Compose:
 environment:
   - smtp_tls_cert=/certs/cert.pem
   - smtp_tls_key=/certs/key.pem
+  - smtp_tls_mode=tls
   - imap_tls_cert=/certs/cert.pem
   - imap_tls_key=/certs/key.pem
 volumes:

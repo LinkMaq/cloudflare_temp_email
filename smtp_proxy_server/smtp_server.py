@@ -135,6 +135,7 @@ class CustomSMTPHandler:
 def start_smtp_server():
     handler = CustomSMTPHandler()
 
+    ssl_context = None
     tls_context = None
     has_cert = bool(settings.smtp_tls_cert)
     has_key = bool(settings.smtp_tls_key)
@@ -143,10 +144,15 @@ def start_smtp_server():
             "Both smtp_tls_cert and smtp_tls_key must be set together"
         )
     if has_cert and has_key:
-        _logger.info("TLS enabled for SMTP (STARTTLS)")
-        tls_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
-        tls_context.options |= ssl.OP_NO_SSLv2 | ssl.OP_NO_SSLv3
-        tls_context.load_cert_chain(settings.smtp_tls_cert, settings.smtp_tls_key)
+        ctx = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+        ctx.options |= ssl.OP_NO_SSLv2 | ssl.OP_NO_SSLv3
+        ctx.load_cert_chain(settings.smtp_tls_cert, settings.smtp_tls_key)
+        if settings.smtp_tls_mode == "tls":
+            _logger.info("TLS enabled for SMTP (implicit TLS/SSL)")
+            ssl_context = ctx
+        else:
+            _logger.info("TLS enabled for SMTP (STARTTLS)")
+            tls_context = ctx
 
     server = Controller(
         handler,
@@ -157,11 +163,13 @@ def start_smtp_server():
         authenticator=handler.authenticator,
         auth_exclude_mechanism=["DONT"],
         tls_context=tls_context,
+        ssl_context=ssl_context,
     )
 
     _logger.info(
-        "Starting SMTP server on port %s tls=%s",
-        settings.port, bool(tls_context),
+        "Starting SMTP server on port %s tls_mode=%s tls=%s",
+        settings.port, settings.smtp_tls_mode,
+        bool(ssl_context or tls_context),
     )
     server.start()
 
@@ -176,8 +184,8 @@ def start_smtp_server():
 
 if __name__ == "__main__":
     _logger.info(
-        "Starting SMTP server proxy_url=%s port=%s tls=%s",
-        settings.proxy_url, settings.port,
+        "Starting SMTP server proxy_url=%s port=%s tls_mode=%s tls=%s",
+        settings.proxy_url, settings.port, settings.smtp_tls_mode,
         bool(settings.smtp_tls_cert and settings.smtp_tls_key),
     )
     start_smtp_server()
