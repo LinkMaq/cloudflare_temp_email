@@ -39,6 +39,21 @@ jobs:
       - name: Set lowercase repository name
         run: echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha,format=short
+          labels: |
+            org.opencontainers.image.title=SMTP Proxy Server
+            org.opencontainers.image.description=SMTP and IMAP proxy server for cloudflare_temp_email
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+
       - name: Build and push Docker images
         uses: docker/build-push-action@v7
         with:
@@ -46,6 +61,7 @@ jobs:
           file: ./smtp_proxy_server/dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
-            ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

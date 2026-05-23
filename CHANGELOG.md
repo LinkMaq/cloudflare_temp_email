@@ -10,6 +10,7 @@
 
 ### Features
 
+- feat: |SMTP Proxy| 优化 `smtp_proxy_server` Docker 镜像发布流程，自动向 GitHub Packages（GHCR）推送 `latest` / 分支 / tag / commit sha 标签，并在文档与 compose 示例中补充包地址与覆盖方式
 - feat: |SMTP Proxy| 新增 `smtp_tls_mode` 配置项，支持直接 TLS/SSL（implicit TLS，默认）模式，不再仅支持 STARTTLS；可选值为 `tls`（直接 TLS）或 `starttls`
 - feat: |Frontend| 新增 `DISABLE_SHOW_GITHUB_FOR_USER` 配置，可仅对普通用户隐藏 Header 的 GitHub/版本入口，admin 仍可见（issue #1041）
 - feat: |Frontend| 将邮箱地址凭证弹窗升级为“地址凭证与连接方式”，复用普通用户与 admin 创建邮箱结果弹窗；支持通过 `ENABLE_AGENT_EMAIL_INFO` 展示 AI Agent 接入信息，并通过 `SMTP_IMAP_PROXY_CONFIG` 展示 SMTP/IMAP 客户端连接信息
