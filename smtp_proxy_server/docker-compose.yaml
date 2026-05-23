@@ -1,6 +1,7 @@
 services:
   smtp_proxy_server:
-    image: ghcr.io/dreamhunter2333/cloudflare_temp_email/smtp_proxy_server:latest
+    # Override SMTP_PROXY_IMAGE if you publish the image under a different GitHub owner or organization.
+    image: ${SMTP_PROXY_IMAGE:-ghcr.io/linkmaq/cloudflare_temp_email/smtp_proxy_server:latest}
     # build:
     #   context: .
     #   dockerfile: dockerfile

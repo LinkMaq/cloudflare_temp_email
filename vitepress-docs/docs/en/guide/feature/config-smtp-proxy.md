@@ -30,6 +30,14 @@ cd smtp_proxy_server/
 docker-compose up -d
 ```
 
+The repository workflow `.github/workflows/smtp_proxy_server.yml` automatically builds and publishes the image to GitHub Packages (GHCR) on `main` pushes, tag pushes, and manual runs:
+
+```text
+ghcr.io/<your-github-username-or-org>/cloudflare_temp_email/smtp_proxy_server
+```
+
+The checked-in `docker-compose.yaml` example defaults to the package path published from this repository copy (`linkmaq`). If you publish from your own fork or organization, export `SMTP_PROXY_IMAGE` before starting the service.
+
 Modify the environment variables in docker-compose.yaml, note to choose the appropriate `tag`
 
 `proxy_url` is the URL address of the `worker`
@@ -37,7 +45,7 @@ Modify the environment variables in docker-compose.yaml, note to choose the appr
 ```yaml
 services:
   smtp_proxy_server:
-    image: ghcr.io/dreamhunter2333/cloudflare_temp_email/smtp_proxy_server:latest
+    image: ${SMTP_PROXY_IMAGE:-ghcr.io/linkmaq/cloudflare_temp_email/smtp_proxy_server:latest}
     # build:
     #   context: .
     #   dockerfile: dockerfile
@@ -49,6 +57,11 @@ services:
       - proxy_url=https://temp-email-api.xxx.xxx
       - port=8025
       - imap_port=11143
+```
+
+```bash
+export SMTP_PROXY_IMAGE=ghcr.io/<your-github-username-or-org>/cloudflare_temp_email/smtp_proxy_server:latest
+docker-compose up -d
 ```
 
 ## Environment Variables

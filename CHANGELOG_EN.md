@@ -10,6 +10,7 @@
 
 ### Features
 
+- feat: |SMTP Proxy| Improve the `smtp_proxy_server` Docker publish workflow so GitHub Packages (GHCR) receives `latest`, branch, tag, and commit SHA tags, and document the package image path plus override flow in the compose examples
 - feat: |SMTP Proxy| Add `smtp_tls_mode` config option to support direct TLS/SSL (implicit TLS, default) instead of only STARTTLS; valid values are `tls` (implicit TLS) or `starttls`
 - feat: |Frontend| Add `DISABLE_SHOW_GITHUB_FOR_USER` to hide the Header GitHub/version entry from normal users while keeping it visible to admin users (issue #1041)
 - feat: |Frontend| Upgrade the address credential dialog to "Address Credentials & Connection Methods" and reuse it for both normal users and admin-created addresses; support showing AI Agent access via `ENABLE_AGENT_EMAIL_INFO` and SMTP/IMAP client settings via `SMTP_IMAP_PROXY_CONFIG`
