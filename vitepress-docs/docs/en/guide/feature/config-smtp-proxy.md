@@ -36,7 +36,7 @@ The repository workflow `.github/workflows/smtp_proxy_server.yml` automatically 
 ghcr.io/<your-github-username-or-org>/cloudflare_temp_email/smtp_proxy_server
 ```
 
-The default `docker-compose.yaml` points at this repository's package. If you publish from your own fork, export `SMTP_PROXY_IMAGE` before starting the service.
+The checked-in `docker-compose.yaml` example defaults to the package path published from this repository copy (`linkmaq`). If you publish from your own fork or organization, export `SMTP_PROXY_IMAGE` before starting the service.
 
 Modify the environment variables in docker-compose.yaml, note to choose the appropriate `tag`
 

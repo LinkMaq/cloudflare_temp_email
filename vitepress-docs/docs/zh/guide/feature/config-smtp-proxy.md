@@ -36,7 +36,7 @@ docker-compose up -d
 ghcr.io/<your-github-username-or-org>/cloudflare_temp_email/smtp_proxy_server
 ```
 
-默认 `docker-compose.yaml` 使用当前仓库的包地址；如果你在自己的 fork 下发布镜像，可先导出 `SMTP_PROXY_IMAGE` 再启动。
+仓库里提交的 `docker-compose.yaml` 示例默认指向当前仓库副本（`linkmaq`）下发布的包地址；如果你在自己的 fork 或组织仓库下发布镜像，可先导出 `SMTP_PROXY_IMAGE` 再启动。
 
 修改 docker-compose.yaml 中的环境变量, 注意选择合适的 `tag`
 
