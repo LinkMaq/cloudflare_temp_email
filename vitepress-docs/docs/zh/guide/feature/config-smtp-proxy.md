@@ -33,7 +33,7 @@ docker-compose up -d
 仓库内的 `.github/workflows/smtp_proxy_server.yml` 会在推送 `main`、打 tag 或手动触发时自动构建并推送镜像到 GitHub Packages（GHCR）：
 
 ```text
-ghcr.io/<owner>/cloudflare_temp_email/smtp_proxy_server
+ghcr.io/<github-username-or-org>/cloudflare_temp_email/smtp_proxy_server
 ```
 
 默认 `docker-compose.yaml` 使用当前仓库的包地址；如果你在自己的 fork 下发布镜像，可先导出 `SMTP_PROXY_IMAGE` 再启动。
@@ -60,7 +60,7 @@ services:
 ```
 
 ```bash
-export SMTP_PROXY_IMAGE=ghcr.io/<your-owner>/cloudflare_temp_email/smtp_proxy_server:latest
+export SMTP_PROXY_IMAGE=ghcr.io/<your-github-username-or-org>/cloudflare_temp_email/smtp_proxy_server:latest
 docker-compose up -d
 ```
 
