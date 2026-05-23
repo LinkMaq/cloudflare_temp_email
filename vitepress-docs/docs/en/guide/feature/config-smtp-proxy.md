@@ -33,7 +33,7 @@ docker-compose up -d
 The repository workflow `.github/workflows/smtp_proxy_server.yml` automatically builds and publishes the image to GitHub Packages (GHCR) on `main` pushes, tag pushes, and manual runs:
 
 ```text
-ghcr.io/<github-username-or-org>/cloudflare_temp_email/smtp_proxy_server
+ghcr.io/<your-github-username-or-org>/cloudflare_temp_email/smtp_proxy_server
 ```
 
 The default `docker-compose.yaml` points at this repository's package. If you publish from your own fork, export `SMTP_PROXY_IMAGE` before starting the service.
